@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @wordpress-plugin
  * Plugin Name:       Sender.net WordPress / Woocommerce integration
- * Plugin URI:        https://sender.net
+ * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
  * Version:           1.0.3
  * Author:            Sender.net

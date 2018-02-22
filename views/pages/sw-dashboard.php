@@ -11,15 +11,18 @@
     <div class="pure-u-1-1 sender-woocommerce-header">
         <div class="pure-g">
             <div class="pure-u-1-1 pure-u-sm-1-2 sw-text-left">
-                <img src="https://app.sender.net/logo_emails.png?1479651832" alt="">
-
+                <?php
+                echo '<img src="' . plugins_url( '/assets/images/logo.png', dirname(dirname(__FILE__)) ) . '" alt="Sender logo"> ';
+                ?>
                 <span>
                     <small>v<?php echo SENDERWOO_CURRENT_VERSION; ?></small>
                 </span>
             </div>
             <?php if(get_option('sender_woocommerce_has_woocommerce')): ?>
             <div class="pure-u-1-2 pure-u-sm-1-2 sw-text-right">
-                <img src="https://help.sender.net/wp-content/uploads/2017/11/wooo.png" height="42" alt="">
+                <?php
+                echo '<img src="' . plugins_url( '/assets/images/woo.png', dirname(dirname(__FILE__)) ) . '" height="42" alt="Woocommerce logo"> ';
+                ?>
             </div>
             <?php endif; ?>
         </div>

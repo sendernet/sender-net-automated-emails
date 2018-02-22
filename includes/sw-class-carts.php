@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sender.net Integration Carts Class
+ * Sender.net Automated Emails Carts Class
  * 
  * Handles carts
  */

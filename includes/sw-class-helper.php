@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sender.net Integration Helper Class
+ * Sender.net Automated Emails Helper Class
  * 
  * 
  */
@@ -432,7 +432,6 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
     /**
      * Error logging function
      * 
-     * @since 1.0.2
      * @param String $error
      */
     public function logError($error) {

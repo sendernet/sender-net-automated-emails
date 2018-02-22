@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sender.net WordPress / Woocommerce integration plugin
+ * Sender.net Automated Emails
  *
  *
  * @link              https://sender.net
@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package           sender-woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:       Sender.net WordPress / Woocommerce integration
+ * Plugin Name:       Sender.net Automated Emails
  * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
- * Version:           1.0.3
+ * Version:           1.0.0
  * Author:            Sender.net
  * Author URI:        https://sender.net
  * License:           GPL-2.0+
@@ -511,7 +511,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
         function sw_add_sender_settings_menu() {
             
             add_options_page(
-                'Sender.net Integration settings',
+                'Sender.net Automated Emails settings',
                 'Sender.net Settings', 'manage_options',
                 'sender-woocommerce',
                 array($this, 'sw_display_sender_settings'));

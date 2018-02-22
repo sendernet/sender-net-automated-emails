@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sender.net Integration Api Class
+ * Sender.net Automated Emails Api Class
  * 
  * Handles communication with sender
  */

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sender.net Integration Settings class
+ * Sender.net Automated Emails Settings class
  * 
  * 
  */

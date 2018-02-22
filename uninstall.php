@@ -2,7 +2,6 @@
 /**
  * Uninstall handler
  * 
- * @since 1.0.3
  */
 
 // if uninstall.php is not called by WordPress, die

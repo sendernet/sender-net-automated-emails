@@ -13,32 +13,32 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 // Add function to widgets_init that'll load our widget.
-if(get_option('sender_woocommerce_allow_forms')) {
-    add_action( 'widgets_init', 'Sender_Woocommerce_Widget' );
+if(get_option('sender_automated_emails_allow_forms')) {
+    add_action( 'widgets_init', 'Sender_Automated_Emails_Widget' );
 }
 
 // Register widget.
-function Sender_Woocommerce_Widget() {
-	register_widget( 'Sender_Woocommerce_Widget' );
+function Sender_Automated_Emails_Widget() {
+	register_widget( 'Sender_Automated_Emails_Widget' );
 }
 
 // Widget class.
-class Sender_Woocommerce_Widget extends WP_Widget {
+class Sender_Automated_Emails_Widget extends WP_Widget {
 	
 /*-----------------------------------------------------------------------------------*/
 /*	Widget Setup
 /*-----------------------------------------------------------------------------------*/
 	
-	function Sender_Woocommerce_Widget() {
+	function Sender_Automated_Emails_Widget() {
         
 		/* Widget settings. */
-		$widget_ops = array( 'classname' => 'sw_sender_form', 'description' => __('Add Sender.net form to your website.', 'framework') );
+		$widget_ops = array( 'classname' => 'sae_sender_form', 'description' => __('Add Sender.net form to your website.', 'framework') );
 
 		/* Widget control settings. */
-		$control_ops = array( 'id_base' => 'sender_woocommerce_widget' );
+		$control_ops = array( 'id_base' => 'sender_automated_emails_widget' );
 
 		/* Create the widget. */
-		parent::__construct( 'sender_woocommerce_widget', __('Sender.net Form', 'framework'), $widget_ops, $control_ops );
+		parent::__construct( 'sender_automated_emails_widget', __('Sender.net Form', 'framework'), $widget_ops, $control_ops );
 	}
 
 /*-----------------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ class Sender_Woocommerce_Widget extends WP_Widget {
 		$title = apply_filters('widget_title', $instance['title'] );
         
         // Get latest form version
-        $forms = get_option('sender_woocommerce_forms_list');
+        $forms = get_option('sender_automated_emails_forms_list');
 		/* Before widget (defined by themes). */
 		echo $before_widget;
         
@@ -83,7 +83,7 @@ class Sender_Woocommerce_Widget extends WP_Widget {
 	
 	function update( $new_instance, $old_instance ) {
 		
-        $sender_api = new Sender_Woocommerce_Api();
+        $sender_api = new Sender_Automated_Emails_Api();
 		$instance = $old_instance;
 		
 		/* Strip tags to remove HTML (important for text inputs). */
@@ -99,7 +99,7 @@ class Sender_Woocommerce_Widget extends WP_Widget {
 	 
 	function form( $instance ) {
         // Get sender API Helper instance
-        $sender_api = new Sender_Woocommerce_Api();
+        $sender_api = new Sender_Automated_Emails_Api();
         
         // Retrieve all forms
         $forms = $sender_api->getAllForms();
@@ -143,7 +143,7 @@ class Sender_Woocommerce_Widget extends WP_Widget {
         <?php } ?>
         <center>
             <p>
-                <a target="_BLANK" href="<?php echo get_admin_url().'options-general.php?page=sender-woocommerce#!forms'; ?>">Manage forms</a> | <a target="_BLANK" href="<?php echo $sender_api->getBaseUrl(); ?>/forms/add">Create new form </a>
+                <a target="_BLANK" href="<?php echo get_admin_url().'options-general.php?page=sender-net-automated-emails#!forms'; ?>">Manage forms</a> | <a target="_BLANK" href="<?php echo $sender_api->getBaseUrl(); ?>/forms/add">Create new form </a>
             </p>
         </center>
 	<?php

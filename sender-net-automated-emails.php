@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @link              https://sender.net
  * @since             1.0.0
- * @package           sender-woocommerce
+ * @package           sender-net-automated-emails
  *
  * @wordpress-plugin
  * Plugin Name:       Sender.net Automated Emails
@@ -21,25 +21,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Author URI:        https://sender.net
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       sender-woocommerce
+ * Text Domain:       sender-net-automated-emails
  */
 
 // Load dependencies
-require_once( "includes/sw-class-settings.php" );
-require_once( "includes/sw-class-helper.php" );
-require_once( "includes/sw-class-api.php" );
-require_once( "includes/sw-class-carts.php" );
-require_once( "includes/sw-class-widget.php" );
+require_once( "includes/sae-class-settings.php" );
+require_once( "includes/sae-class-helper.php" );
+require_once( "includes/sae-class-api.php" );
+require_once( "includes/sae-class-carts.php" );
+require_once( "includes/sae-class-widget.php" );
 
 
-if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
+if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
     
 /**
- * Sender Woocommerce Class
+ * Sender Automated Emails Class
  * 
  * 
  */
-    class Sender_Woocommerce {
+    class Sender_Automated_Emails {
 
     /**
      * 
@@ -53,38 +53,38 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
             $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'), false);
             $plugin_version = $plugin_data['Version'];
 
-            define ( 'SENDERWOO_CURRENT_VERSION', $plugin_version );
+            define ( 'SENDERAUTOMATEDEMAILS_CURRENT_VERSION', $plugin_version );
 
-            register_activation_hook( __FILE__, array(&$this, 'sw_activate'));
+            register_activation_hook( __FILE__, array(&$this, 'sae_activate'));
 
-            add_action('admin_init', array(&$this, 'sw_check_for_woo'));
+            add_action('admin_init', array(&$this, 'sae_check_for_woo'));
 
-            add_action('admin_menu', array(&$this, 'sw_add_sender_settings_menu'));
+            add_action('admin_menu', array(&$this, 'sae_add_sender_settings_menu'));
             
-            add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'sw_add_plugin_action_links') );
+            add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'sae_add_plugin_action_links') );
 
-            add_action('admin_enqueue_scripts', array(&$this, 'sw_enqueue_scripts_css'));
+            add_action('admin_enqueue_scripts', array(&$this, 'sae_enqueue_scripts_css'));
 
-            add_action('admin_enqueue_scripts', array(&$this, 'sw_enqueue_scripts_js'));
+            add_action('admin_enqueue_scripts', array(&$this, 'sae_enqueue_scripts_js'));
             
-            if(get_option('sender_woocommerce_plugin_active')) {
+            if(get_option('sender_automated_emails_plugin_active')) {
                 
-                $wooEnabled = get_option('sender_woocommerce_has_woocommerce');
-                $autoSubscribeNewUsers = get_option('sender_woocommerce_registration_track');
-                $allowPush = get_option('sender_woocommerce_allow_push');
-                $allowForms = get_option('sender_woocommerce_allow_forms');
+                $wooEnabled = get_option('sender_automated_emails_has_woocommerce');
+                $autoSubscribeNewUsers = get_option('sender_automated_emails_registration_track');
+                $allowPush = get_option('sender_automated_emails_allow_push');
+                $allowForms = get_option('sender_automated_emails_allow_forms');
 
 
                 if($autoSubscribeNewUsers) {
-                    add_action('user_register', array(&$this, 'sw_subscribe_new_user'), 10, 1);
+                    add_action('user_register', array(&$this, 'sae_subscribe_new_user'), 10, 1);
                 }
 
                 if($allowPush) {
-                    add_action('wp_footer', array(&$this, 'sw_add_push_script'));
+                    add_action('wp_footer', array(&$this, 'sae_add_push_script'));
                 }
 
                 if($allowForms) {
-                    add_action('admin_init', array(&$this, 'sw_update_form_versions'));
+                    add_action('admin_init', array(&$this, 'sae_update_form_versions'));
                 }
 
                 // Add woocommerce related hooks
@@ -92,24 +92,24 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                     
                     add_action( 'init',  array( &$this, 'emailCapturingHandler'), 10, 2 ); 
 
-                    $senderWoocommerceCarts = new Sender_Woocommerce_Carts();	
+                    $senderAutomatedEmailsCarts = new Sender_Automated_Emails_Carts();	
                     // Redirect after login if user comes from hash url
-                    if(isset($_COOKIE['sender_woocommerce_h'])) {
-                        add_filter( 'woocommerce_login_redirect', array(&$this, 'sw_after_login_redirect'));
+                    if(isset($_COOKIE['sender_automated_emails_h'])) {
+                        add_filter( 'woocommerce_login_redirect', array(&$this, 'sae_after_login_redirect'));
                     }
-                    add_filter('template_include', array(&$senderWoocommerceCarts, 'assignCart'), 99, 1);
+                    add_filter('template_include', array(&$senderAutomatedEmailsCarts, 'assignCart'), 99, 1);
 
-                    if(get_option('sender_woocommerce_high_acc')) {
-                        add_action('woocommerce_cart_updated', array(&$senderWoocommerceCarts, 'handleCarts'));
+                    if(get_option('sender_automated_emails_high_acc')) {
+                        add_action('woocommerce_cart_updated', array(&$senderAutomatedEmailsCarts, 'handleCarts'));
                     } else {
-                        add_action('woocommerce_update_cart_action_cart_updated', array(&$senderWoocommerceCarts, 'handleCarts'));
-                        add_action('woocommerce_add_to_cart', array(&$senderWoocommerceCarts, 'handleCarts'));
-                        add_action('woocommerce_cart_item_removed', array(&$senderWoocommerceCarts, 'handleCarts'));
+                        add_action('woocommerce_update_cart_action_cart_updated', array(&$senderAutomatedEmailsCarts, 'handleCarts'));
+                        add_action('woocommerce_add_to_cart', array(&$senderAutomatedEmailsCarts, 'handleCarts'));
+                        add_action('woocommerce_cart_item_removed', array(&$senderAutomatedEmailsCarts, 'handleCarts'));
                     }
 
-                    add_action( 'woocommerce_checkout_order_processed', array( &$senderWoocommerceCarts,  'convertCart' ), 10 , 1 );
+                    add_action( 'woocommerce_checkout_order_processed', array( &$senderAutomatedEmailsCarts,  'convertCart' ), 10 , 1 );
 
-                    add_action( 'woocommerce_single_product_summary',  array( &$this, 'sw_add_sender_product_import'), 10, 2 ); 
+                    add_action( 'woocommerce_single_product_summary',  array( &$this, 'sae_add_sender_product_import'), 10, 2 ); 
                     
                     add_action( 'woocommerce_after_checkout_billing_form',  array( &$this, 'guestEmailCatchJs'), 10, 2 ); 
                     
@@ -147,7 +147,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
 
             global $wpdb, $woocommerce;
             
-            $sender_carts = new Sender_Woocommerce_Carts();
+            $sender_carts = new Sender_Automated_Emails_Carts();
             $current_time = current_time( 'timestamp' );
             
             // Check for submitted form data
@@ -189,7 +189,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
             
             if ( $results_guest ) { // Guest already exists
                 
-                $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_users`
+                $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_users`
                             SET updated = %d
                             WHERE id = %d ";
 
@@ -197,7 +197,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                 
                 if($results_guest_cart) {
                     
-                    $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+                    $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                             SET user_id = %d,
                                 updated = %d
                             WHERE id = %d ";
@@ -215,7 +215,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                 
                 if($user_id == 0) { // Create guest user if there is none
                     
-                    $sqlQuery = "INSERT INTO `".$wpdb->prefix."sender_woocommerce_users`
+                    $sqlQuery = "INSERT INTO `".$wpdb->prefix."sender_automated_emails_users`
                              ( first_name, last_name, email, created, updated )
                              VALUES ( %s, %s, %s, %d, %d )";
 
@@ -225,7 +225,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                     
                 } else { // Update guest user
                     
-                    $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_users`
+                    $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_users`
                                 SET email =   %s,
                                     updated = %d
                                 WHERE id = %d ";
@@ -234,7 +234,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
         
                 }
                 
-                $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+                $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                                 SET user_id = %d,
                                     updated = %d
                                 WHERE id = %d ";
@@ -244,7 +244,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                 
             } else { // Create new guest user
                 
-                $sqlQuery = "INSERT INTO `".$wpdb->prefix."sender_woocommerce_users`
+                $sqlQuery = "INSERT INTO `".$wpdb->prefix."sender_automated_emails_users`
                              ( first_name, last_name, email, created, updated )
                              VALUES ( %s, %s, %s, %d, %d )";
 
@@ -258,8 +258,8 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
             
             $_SESSION['user_id'] = $user_id;
             
-            $api = new Sender_Woocommerce_Api();
-            $mailinglist = get_option('sender_woocommerce_customers_list');
+            $api = new Sender_Automated_Emails_Api();
+            $mailinglist = get_option('sender_automated_emails_customers_list');
             $api->addToList($user_email, $mailinglist['id'], $billing_first_name, $billing_last_name);
 
             $cart    = array();
@@ -282,7 +282,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                         $sender_carts->prepareForApiCall($results[0]->id, $userR[0]->email);
                     }
                     
-                    $_SESSION['sender_woocommerce_cart_id'] = $results[0]->id;
+                    $_SESSION['sender_automated_emails_cart_id'] = $results[0]->id;
                     
             } else {
                    
@@ -301,7 +301,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                             // Do not prepare if no email given
     //                        $sender_carts->prepareForApiCall($cartId);
                             
-                            $_SESSION['sender_woocommerce_cart_id'] = $cartId;
+                            $_SESSION['sender_automated_emails_cart_id'] = $cartId;
                            
                         }   
                         
@@ -309,7 +309,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                         
                         if ( !empty($cart['cart']) ) {  
                             
-                             $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+                             $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                                         SET cart_data = %s,
                                             updated = %d
                                         WHERE id = %d AND
@@ -324,7 +324,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                             $email = $sender_carts->getSenderUser($guestCart[0]->user_id);
                             $sender_carts->prepareForApiCall($results[0]->id,$email);
                              
-                            $_SESSION['sender_woocommerce_cart_id'] = $results[0]->id;
+                            $_SESSION['sender_automated_emails_cart_id'] = $results[0]->id;
                             
                         }
                         
@@ -339,9 +339,9 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * 
      * @global type $product
      */
-        function sw_add_sender_product_import() {
+        function sae_add_sender_product_import() {
             
-            if(get_option('sender_woocommerce_allow_import')) {
+            if(get_option('sender_automated_emails_allow_import')) {
                 global $product;
                 $id = $product->get_id();
 
@@ -378,10 +378,10 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * 
      * @param type $user_id
      */
-        function sw_subscribe_new_user($user_id) {
-            $sender_api = new Sender_Woocommerce_Api();
+        function sae_subscribe_new_user($user_id) {
+            $sender_api = new Sender_Automated_Emails_Api();
             $userObj = get_userdata($user_id);
-            $listId = get_option('sender_woocommerce_registration_list');
+            $listId = get_option('sender_automated_emails_registration_list');
             $sender_api->addToList($userObj->user_email, $listId['id']);
         }
         
@@ -391,9 +391,9 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * @param type $links
      * @return type
      */
-        function sw_add_plugin_action_links($links) {
+        function sae_add_plugin_action_links($links) {
            $mylinks = array(
-            '<a href="' . admin_url( 'options-general.php?page=sender-woocommerce' ) . '">Settings</a>',
+            '<a href="' . admin_url( 'options-general.php?page=sender-net-automated-emails' ) . '">Settings</a>',
             );
            return array_merge( $links, $mylinks );
         }
@@ -401,9 +401,9 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
     /**
      * 
      */
-        function sw_update_form_versions() {
+        function sae_update_form_versions() {
             
-            $sender_api = new Sender_Woocommerce_Api();
+            $sender_api = new Sender_Automated_Emails_Api();
             $forms = $sender_api->getAllForms();
             
             if(!isset($forms->error)) {
@@ -414,7 +414,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                     $formOptions[$form->id] = $form->script_url; 
                 }
 
-                update_option('sender_woocommerce_forms_list', $formOptions);
+                update_option('sender_automated_emails_forms_list', $formOptions);
                 
             }
             
@@ -425,8 +425,8 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
     /**
      * Generate push notification script
      */
-        function sw_add_push_script() {
-            $sender_api = new Sender_Woocommerce_Api();
+        function sae_add_push_script() {
+            $sender_api = new Sender_Automated_Emails_Api();
             ?>
                 <script type="text/javascript">
                 (function(p,u,s,h){
@@ -475,9 +475,9 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
        * @param string $redirect
        * @return string
        */
-        public function sw_after_login_redirect($redirect) {
+        public function sae_after_login_redirect($redirect) {
             
-            $redirect = get_site_url() . '/?hash=' . $_COOKIE['sender_woocommerce_h'];
+            $redirect = get_site_url() . '/?hash=' . $_COOKIE['sender_automated_emails_h'];
             return $redirect;
             
         }
@@ -487,7 +487,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * 
      * @return boolean
      */
-        public static function sw_has_woocommerce() {
+        public static function sae_has_woocommerce() {
 
             if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && class_exists( 'WooCommerce' ) ) {
                 return true;
@@ -496,11 +496,11 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
             }
         }
         
-        public function sw_check_for_woo() {
-            if(!self::sw_has_woocommerce() && is_plugin_active(plugin_basename(__FILE__))) {
-               update_option('sender_woocommerce_has_woocommerce', false);
+        public function sae_check_for_woo() {
+            if(!self::sae_has_woocommerce() && is_plugin_active(plugin_basename(__FILE__))) {
+               update_option('sender_automated_emails_has_woocommerce', false);
             } else {
-               update_option('sender_woocommerce_has_woocommerce', true);
+               update_option('sender_automated_emails_has_woocommerce', true);
             }
         }
         
@@ -508,13 +508,13 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * Add Sender.net plugin settings link under system settings
      * 
      */
-        function sw_add_sender_settings_menu() {
+        function sae_add_sender_settings_menu() {
             
             add_options_page(
                 'Sender.net Automated Emails settings',
                 'Sender.net Settings', 'manage_options',
-                'sender-woocommerce',
-                array($this, 'sw_display_sender_settings'));
+                'sender-net-automated-emails',
+                array($this, 'sae_display_sender_settings'));
             
         }
         
@@ -522,8 +522,8 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * Display Sender.net settings page.
      * 
      */
-        public function sw_display_sender_settings() {
-            include_once( 'views/sw-admin-settings.php' ); 
+        public function sae_display_sender_settings() {
+            include_once( 'views/sae-admin-settings.php' ); 
         }
         
     /**
@@ -534,7 +534,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * 
      * @global type $wpdb
      */                            
-        function sw_activate() {
+        function sae_activate() {
             
             require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
             global $wpdb;
@@ -545,7 +545,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
                 $wcap_collate = $wpdb->get_charset_collate();
             }
             
-            $sender_carts = $wpdb->prefix . 'sender_woocommerce_carts';
+            $sender_carts = $wpdb->prefix . 'sender_automated_emails_carts';
             $cartsSql = "CREATE TABLE IF NOT EXISTS $sender_carts (
                              `id` int(11) NOT NULL AUTO_INCREMENT,
                              `user_id` int(11) NOT NULL,
@@ -563,7 +563,7 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
             
             
             
-            $sender_users = $wpdb->prefix."sender_woocommerce_users" ;
+            $sender_users = $wpdb->prefix."sender_automated_emails_users" ;
             
             $usersSql = "CREATE TABLE IF NOT EXISTS $sender_users (
             `id` int(15) NOT NULL AUTO_INCREMENT,
@@ -577,56 +577,56 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
             $wpdb->query( $usersSql );
             
             // Setup options
-            if( !get_option( 'sender_woocommerce_api_key' ) ) {
-                add_option( 'sender_woocommerce_api_key', 'api_key' );
+            if( !get_option( 'sender_automated_emails_api_key' ) ) {
+                add_option( 'sender_automated_emails_api_key', 'api_key' );
             }
             
-            if( !get_option( 'sender_woocommerce_allow_guest_track' ) ) {
-                add_option( 'sender_woocommerce_allow_guest_track', false );
+            if( !get_option( 'sender_automated_emails_allow_guest_track' ) ) {
+                add_option( 'sender_automated_emails_allow_guest_track', false );
             }
        
-            if( !get_option( 'sender_woocommerce_allow_import' ) ) {
-                add_option( 'sender_woocommerce_allow_import', 1 );
+            if( !get_option( 'sender_automated_emails_allow_import' ) ) {
+                add_option( 'sender_automated_emails_allow_import', 1 );
             }
             
-            if( !get_option( 'sender_woocommerce_allow_forms' ) ) {
-                add_option( 'sender_woocommerce_allow_forms', false );
+            if( !get_option( 'sender_automated_emails_allow_forms' ) ) {
+                add_option( 'sender_automated_emails_allow_forms', false );
             }
             
-            if( !get_option( 'sender_woocommerce_customers_list' ) ) {
-                add_option( 'sender_woocommerce_customers_list', array('id' => false, 'title' => ' ') );
+            if( !get_option( 'sender_automated_emails_customers_list' ) ) {
+                add_option( 'sender_automated_emails_customers_list', array('id' => false, 'title' => ' ') );
             }
             
-            if( !get_option( 'sender_woocommerce_registration_list' ) ) {
-                add_option( 'sender_woocommerce_registration_list', array('id' => false, 'title' => ' ') );
+            if( !get_option( 'sender_automated_emails_registration_list' ) ) {
+                add_option( 'sender_automated_emails_registration_list', array('id' => false, 'title' => ' ') );
             }
             
-            if( !get_option( 'sender_woocommerce_registration_track' ) ) {
-                add_option( 'sender_woocommerce_registration_track', 1 );
+            if( !get_option( 'sender_automated_emails_registration_track' ) ) {
+                add_option( 'sender_automated_emails_registration_track', 1 );
             }
            
-            if( !get_option( 'sender_woocommerce_cart_period' ) ) {
-                add_option( 'sender_woocommerce_cart_period', 'today' );
+            if( !get_option( 'sender_automated_emails_cart_period' ) ) {
+                add_option( 'sender_automated_emails_cart_period', 'today' );
             }
             
-            if( !get_option( 'sender_woocommerce_has_woocommerce' ) ) {
-                add_option( 'sender_woocommerce_has_woocommerce', false );
+            if( !get_option( 'sender_automated_emails_has_woocommerce' ) ) {
+                add_option( 'sender_automated_emails_has_woocommerce', false );
             }
             
-            if( !get_option( 'sender_woocommerce_high_acc' ) ) {
-                add_option( 'sender_woocommerce_high_acc', true );
+            if( !get_option( 'sender_automated_emails_high_acc' ) ) {
+                add_option( 'sender_automated_emails_high_acc', true );
             }
             
-            if( !get_option( 'sender_woocommerce_allow_push' ) ) {
-                add_option( 'sender_woocommerce_allow_push', false );
+            if( !get_option( 'sender_automated_emails_allow_push' ) ) {
+                add_option( 'sender_automated_emails_allow_push', false );
             }
             
-            if( !get_option( 'sender_woocommerce_forms_list' ) ) {
-                add_option( 'sender_woocommerce_forms_list', false );
+            if( !get_option( 'sender_automated_emails_forms_list' ) ) {
+                add_option( 'sender_automated_emails_forms_list', false );
             }
             
-            if( !get_option( 'sender_woocommerce_plugin_active' ) ) {
-                add_option( 'sender_woocommerce_plugin_active', false );
+            if( !get_option( 'sender_automated_emails_plugin_active' ) ) {
+                add_option( 'sender_automated_emails_plugin_active', false );
             }
             
     }
@@ -636,9 +636,9 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * 
      * @param type $hook
      */  
-        function sw_enqueue_scripts_js( $hook ) {
-                wp_enqueue_script( 'sender_scripts', plugin_dir_url( __FILE__ ) . 'assets/js/sw-sender-scripts.js' ); 
-                wp_enqueue_script( 'sw_table_sorter', plugin_dir_url( __FILE__ ) . 'assets/js/sw-vendor-tablesorter.js' ); 
+        function sae_enqueue_scripts_js( $hook ) {
+                wp_enqueue_script( 'sender_scripts', plugin_dir_url( __FILE__ ) . 'assets/js/sae-sender-scripts.js' ); 
+                wp_enqueue_script( 'sae_table_sorter', plugin_dir_url( __FILE__ ) . 'assets/js/sae-vendor-tablesorter.js' ); 
         }
     
     /**
@@ -646,14 +646,14 @@ if( !class_exists( 'Sender_Woocommerce' ) ) { // Check if class exists
      * 
      * @param type $hook
      */
-        function sw_enqueue_scripts_css( $hook ) { 
-                wp_enqueue_style( 'sender_styles', plugin_dir_url( __FILE__ ) . 'assets/css/sw-sender-style.css' );
-                wp_enqueue_style( 'sw_material_icons', plugin_dir_url( __FILE__ ) . 'assets/css/sw-vendor-material-design-iconic-font.css' );
+        function sae_enqueue_scripts_css( $hook ) { 
+                wp_enqueue_style( 'sender_styles', plugin_dir_url( __FILE__ ) . 'assets/css/sae-sender-style.css' );
+                wp_enqueue_style( 'sae_material_icons', plugin_dir_url( __FILE__ ) . 'assets/css/sae-vendor-material-design-iconic-font.css' );
         }       
                 
     }   
 }   
 // Init class
-$senderWoocommerce = new Sender_Woocommerce();
+$senderAutomatedEmails = new Sender_Automated_Emails();
 
 ?>

@@ -2,7 +2,7 @@
     if ( ! defined( 'ABSPATH' ) ) {
         exit; // Exit if accessed directly
     }
-    $isPushEnabled = get_option('sender_woocommerce_allow_push');
+    $isPushEnabled = get_option('sender_automated_emails_allow_push');
     $pushProject = $sender_api->getPushProject();
 ?>
 <h1>Push project</h1>
@@ -10,12 +10,12 @@
 
 <?php if(!isset($pushProject->error)): ?>
         <div class="pure-u-1-1">
-            <h3><i class="zmdi zmdi-notifications-active"></i> Push notifications are <?php echo !$isPushEnabled ? '<span id="swAllowPushTitle" style="color:red;">disabled</span>' : '<span id="swAllowPushTitle" style="color:green;">enabled</span>'; ?> </h3>  
+            <h3><i class="zmdi zmdi-notifications-active"></i> Push notifications are <?php echo !$isPushEnabled ? '<span id="saeAllowPushTitle" style="color:red;">disabled</span>' : '<span id="saeAllowPushTitle" style="color:green;">enabled</span>'; ?> </h3>  
         </div>
         
-        <div class="pure-u-1-1 pure-u-sm-3-24 sw-details-settings">
+        <div class="pure-u-1-1 pure-u-sm-3-24 sae-details-settings">
 
-        <button id="swAllowPushButton" style="width: 90%; background-color:<?php echo !$isPushEnabled ? 'green' : 'red'; ?>" class="sender-woocommerce-button"><?php echo !$isPushEnabled ? 'Enable' : 'Disable'; ?></button>
+        <button id="saeAllowPushButton" style="width: 90%; background-color:<?php echo !$isPushEnabled ? 'green' : 'red'; ?>" class="sender-net-automated-emails-button"><?php echo !$isPushEnabled ? 'Enable' : 'Disable'; ?></button>
         </div>
 
         <div class="pure-u-1-1 pure-u-sm-12-24">
@@ -29,7 +29,7 @@
 <?php else: ?>
     <div class="pure-u-1-1">
         <h3><i class="zmdi zmdi-alert-circle-o"></i> You don't have push project</h3>
-        <a class="sender-woocommerce-button" target="_BLANK" href="<?php echo $sender_helper->getBaseurl(); ?>/push_projects/create">Create a new push project</a>
+        <a class="sender-net-automated-emails-button" target="_BLANK" href="<?php echo $sender_helper->getBaseurl(); ?>/push_projects/create">Create a new push project</a>
         
     </div>
 <?php endif; ?>

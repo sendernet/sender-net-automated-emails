@@ -94,7 +94,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
             $cartsTable = $wpdb->prefix."sender_automated_emails_carts";
             $cartPeriod = get_option('sender_automated_emails_cart_period');
             
-            switch ($cartPeriod) {
+            saeitch ($cartPeriod) {
                 case 'hour':
                     $cartPeriod = '1 HOUR';
                     break;
@@ -246,7 +246,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
             if(isset($links)) {
                 echo '<div style="text-align: center;">';
                 foreach ($links as $link) {
-                    $link = str_replace('current', 'sw-current-link', $link);
+                    $link = str_replace('current', 'sae-current-link', $link);
                     echo '<span class="" style="margin-left:2px; background-color: #fff; color: #000 !important; text-decoration: none !important;">' . str_replace('page-numbers', 'sender-net-automated-emails-button', $link) . '</span>';
                 }
                 echo "</div>";
@@ -421,7 +421,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
             if(isset($links)) {
                 echo '<div style="text-align: center;">';
                 foreach ($links as $link) {
-                    $link = str_replace('current', 'sw-current-link', $link);
+                    $link = str_replace('current', 'sae-current-link', $link);
                     echo '<span class="" style="margin-left:2px; background-color: #fff; color: #000 !important; text-decoration: none !important;">' . str_replace('page-numbers', 'sender-net-automated-emails-button', $link) . '</span>';
                 }
                 echo "</div>";

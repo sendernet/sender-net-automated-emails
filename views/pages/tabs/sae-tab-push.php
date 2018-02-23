@@ -23,13 +23,13 @@
                 When enabled, this feature shows your push project's subscribe icon on your website. You can manage the push campaigns in your Sender.net account’s dashboard. 
             </p>
             <p>
-                <a target="_BLANK" href="https://help.sender.net/section/push-notifications/">Getting started with push notifications</a> | <a target="_BLANK" href="<?php echo $sender_helper->getBaseurl(); ?>/push_campaigns">Manage your push campaigns</a> | <a target="_BLANK" href="<?php echo $sender_helper->getBaseurl(); ?>/push_projects/view">Customize push project</a>
+                <a target="_BLANK" href="https://help.sender.net/section/push-notifications/">Getting started with push notifications</a> | <a target="_BLANK" href="<?php echo esc_url($sender_helper->getBaseurl()); ?>/push_campaigns">Manage your push campaigns</a> | <a target="_BLANK" href="<?php echo esc_url($sender_helper->getBaseurl()); ?>/push_projects/view">Customize push project</a>
             </p>
         </div>
 <?php else: ?>
     <div class="pure-u-1-1">
         <h3><i class="zmdi zmdi-alert-circle-o"></i> You don't have push project</h3>
-        <a class="sender-net-automated-emails-button" target="_BLANK" href="<?php echo $sender_helper->getBaseurl(); ?>/push_projects/create">Create a new push project</a>
+        <a class="sender-net-automated-emails-button" target="_BLANK" href="<?php echo esc_url($sender_helper->getBaseurl()); ?>/push_projects/create">Create a new push project</a>
         
     </div>
 <?php endif; ?>

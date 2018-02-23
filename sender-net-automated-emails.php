@@ -411,7 +411,7 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
                 $formOptions = array();
                 
                 foreach($forms as $form) {
-                    $formOptions[$form->id] = $form->script_url; 
+                    $formOptions[$form->id] = esc_url_raw($form->script_url); 
                 }
 
                 update_option('sender_automated_emails_forms_list', $formOptions);
@@ -435,7 +435,7 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
                     s=u.createElement('script');
                     s.type='text/javascript';
                     s.async=true;
-                    s.src="<?php echo $sender_api->getPushProject(); ?>";
+                    s.src="<?php echo esc_url_raw($sender_api->getPushProject()); ?>";
                     h=u.getElementsByTagName('script')[0];
                     h.parentNode.insertBefore(s,h);
                 })(window,document);

@@ -71,7 +71,7 @@ echo $sender_helper->showNotice($forms->error->message, 'warning');
                             <td>%s</td>
                             <td>%s</td>
                             <td><a target="_BLANK" href="%s/forms/subscription_edit/%d" >Edit</a> | <a target="_BLANK" href="%s/forms/subscription/%d" >Preview</a></td>
-                        </tr>',$i, $form->title, $form->version, $sender_api->getBaseUrl(), $form->id, $sender_api->getBaseUrl(), $form->id );
+                        </tr>',(int) $i, esc_html($form->title), esc_html($form->version), esc_url($sender_api->getBaseUrl()), (int) $form->id, esc_url($sender_api->getBaseUrl()), (int) $form->id );
                 }
             ?>
         </tbody>

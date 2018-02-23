@@ -11,6 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
     
+    /**
+     * Enables debug mode
+     * 
+     * @var boolean true when enabled
+     */
     public $debug = false;
 
 
@@ -55,13 +60,15 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
             $forms = $api->getAllForms();
             
             if(isset($lists[0]->id) ) {
-                update_option('sender_automated_emails_customers_list', array('id' => $lists[0]->id, 'title' => $lists[0]->title));
+                update_option('sender_automated_emails_customers_list', 
+                    array('id' => (int) $lists[0]->id, 'title' => sanitize_text_field($lists[0]->title)));
             } else {
                 update_option('sender_automated_emails_allow_guest_track', 0);
             }
             
             if(isset($lists[0]->id)) {
-                update_option('sender_automated_emails_registration_list', array('id' => $lists[0]->id, 'title' => $lists[0]->title));
+                update_option('sender_automated_emails_registration_list', 
+                    array('id' => (int) $lists[0]->id, 'title' => sanitize_text_field($lists[0]->title)));
             } else {
                 update_option('sender_automated_emails_registration_track', 0);
             }
@@ -94,7 +101,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
             $cartsTable = $wpdb->prefix."sender_automated_emails_carts";
             $cartPeriod = get_option('sender_automated_emails_cart_period');
             
-            saeitch ($cartPeriod) {
+            switch ($cartPeriod) {
                 case 'hour':
                     $cartPeriod = '1 HOUR';
                     break;
@@ -234,7 +241,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
 
                         <td>%s</td>
                         <td>%s</td>
-                    </tr>', $i, $result->email ? $result->email : 'Not provided', $color, $cs, $result->cart_recovered ? 'Yes' : 'No', $quantity_total, $line_total, $date );
+                    </tr>', (int )$i, esc_html($result->email) ? esc_html($result->email) : 'Not provided', $color, $cs, (bool) $result->cart_recovered ? 'Yes' : 'No', (int )$quantity_total, (int) $line_total, $date );
 
                 $i++;
                 
@@ -405,7 +412,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
 
                         <td>%s</td>
                         <td>%s</td>
-                    </tr>', $i, $result->email ? $result->email : 'Not provided', $color, $cs, $result->cart_recovered ? 'Yes' : 'No', $quantity_total, $line_total, $date );
+                    </tr>', (int) $i, esc_html($result->email) ? esc_html($result->email) : 'Not provided', $color, $cs, (bool) $result->cart_recovered ? 'Yes' : 'No', (float) $quantity_total, (float) $line_total, $date );
 
                 $i++;
                 

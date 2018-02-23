@@ -4,13 +4,13 @@
     }
 // Only if woo is found
   if(get_option('sender_automated_emails_has_woocommerce')) {
-    $allowImport = get_option('sender_automated_emails_allow_import');
-    $allowTrack = get_option('sender_automated_emails_allow_guest_track');
-    $allowSubscribe = get_option('sender_automated_emails_registration_track');
-    $customersList = get_option('sender_automated_emails_customers_list');
+    $allowImport     = get_option('sender_automated_emails_allow_import');
+    $allowTrack      = get_option('sender_automated_emails_allow_guest_track');
+    $allowSubscribe  = get_option('sender_automated_emails_registration_track');
+    $customersList   = get_option('sender_automated_emails_customers_list');
     $saeNewUsersList = get_option('sender_automated_emails_registration_list');
-    $lists = $sender_api->getAllLists();
-    $allowHighAcc = get_option('sender_automated_emails_high_acc');
+    $lists           = $sender_api->getAllLists();
+    $allowHighAcc    = get_option('sender_automated_emails_high_acc');
   }
 ?>
 <h1>Settings</h1>
@@ -33,11 +33,11 @@
             <table>
                 <tr>
                     <td>Account email:</td>
-                    <td><strong><?php echo $sender_api->ping()->email; ?></strong></td>
+                    <td><strong><?php echo esc_html($sender_api->ping()->email); ?></strong></td>
                 </tr>
                 <tr>
                     <td>API key:</td>
-                    <td><strong><?php echo $sender_api->getApiKey(); ?></strong></td>
+                    <td><strong><?php echo esc_html($sender_api->getApiKey()); ?></strong></td>
                 </tr>
             </table>
            
@@ -59,7 +59,7 @@
                 <?php
                     
                     foreach($lists as $list) {
-                        echo '<option value="' . $list->id . '" ' . ($list->id == $saeNewUsersList['id'] ? 'selected' : '') . '>' . $list->title . '</option>';
+                        echo '<option value="' . (int) $list->id . '" ' . ((int)$list->id == (int) $saeNewUsersList['id'] ? 'selected' : '') . '>' . esc_html($list->title) . '</option>';
                     }
                 ?>
             </select>
@@ -94,7 +94,7 @@
             This feature allows you to capture new users automatically and add them to the selected subscriber list. It is especially useful for automated welcome emails.
             </p>
             <p>
-                <a target="_BLANK" href="https://help.sender.net/knowledgebase/how-to-create-an-automated-welcome-email/">Create an automated welcome email</a> | <a target="_BLANK" href="<?php echo $sender_helper->getBaseurl(); ?>/mailinglists">Manage subscriber lists</a>
+                <a target="_BLANK" href="https://help.sender.net/knowledgebase/how-to-create-an-automated-welcome-email/">Create an automated welcome email</a> | <a target="_BLANK" href="<?php echo esc_url($sender_helper->getBaseurl()); ?>/mailinglists">Manage subscriber lists</a>
             </p>
         </div>
 
@@ -117,7 +117,7 @@
                     <?php
 
                         foreach($lists as $list) {
-                            echo '<option value="' . $list->id . '" ' . ($list->id == $customersList['id'] ? 'selected' : '') . '>' . $list->title . '</option>';
+                            echo '<option value="' . (int) $list->id . '" ' . ((int) $list->id == (int) $customersList['id'] ? 'selected' : '') . '>' . esc_html($list->title) . '</option>';
                         }
                     ?>
                 </select>

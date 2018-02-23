@@ -504,9 +504,10 @@ class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
         $url = wc_get_cart_url();
 
         if(isset($_GET['hash'])) {
-            $sCart = $this->sender_api->cartGet($_GET['hash']);
-            $cartId = (int)$sCart->cart_id;
-            setcookie( 'sender_automated_emails_h', $_GET['hash'], time() + 900000 );
+            $cartHash = sanitize_text_field($_GET['hash']);
+            $sCart = $this->sender_api->cartGet($cartHash);
+            $cartId = (int) $sCart->cart_id;
+            setcookie( 'sender_automated_emails_h', $cartHash, time() + 900000 );
         }
 
         $this->sender_helper->logError('Assign cart id: ' . $cartId);
@@ -525,7 +526,7 @@ class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
             $get_user_id_query = "SELECT * FROM `".$wpdb->prefix."sender_automated_emails_carts` WHERE id = %d AND cart_recovered = '0' AND cart_status = '0'";
             $get_user_results  = $wpdb->get_results( $wpdb->prepare( $get_user_id_query, $cartId ) );
             $user_id           = 0;
-            $user_type = false;
+            $user_type         = false;
             
             if ( isset( $get_user_results ) && count( $get_user_results ) > 0 ) { 
                 $user_id = $get_user_results[0]->user_id;

@@ -7,8 +7,8 @@
 
 ?>
 
-<div class="pure-g sender-net-automated_emails-card">
-    <div class="pure-u-1-1 sender-net-automated_emails-header">
+<div class="pure-g sender-net-automated-emails-card">
+    <div class="pure-u-1-1 sender-net-automated-emails-header">
         <div class="pure-g">
             <div class="pure-u-1-1 pure-u-sm-1-2 sae-text-left">
                 <?php
@@ -28,7 +28,7 @@
         </div>
     </div>
     
-    <div class="pure-u-1-1 pure-u-lg-3-24 sender-net-automated_emails-hide-small sender-net-automated_emails-menu">
+    <div class="pure-u-1-1 pure-u-lg-3-24 sender-net-automated-emails-hide-small sender-net-automated-emails-menu">
         <ul class="sae-tabs sae-main-menu">
             <?php if(get_option('sender_automated_emails_has_woocommerce') && false): ?>
             <li class="tab-link sae-current sae-active" data-tab="dashboard" disabled>
@@ -51,7 +51,7 @@
             
         </ul>
     </div>
-    <div class="pure-u-1-1 pure-u-lg-18-24 sender-net-automated_emails-content">
+    <div class="pure-u-1-1 pure-u-lg-18-24 sender-net-automated-emails-content">
        <?php if(get_option('sender_automated_emails_has_woocommerce') && false): ?>
         <div id="dashboard" class="sae-tab-content sae-current">
             <?php include_once 'tabs/sae-tab-dashboard.php'; ?>

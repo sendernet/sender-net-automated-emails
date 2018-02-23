@@ -58,8 +58,8 @@ class Sender_Automated_Emails_Settings {
 
         if(isset($_POST['listId']) && isset($_POST['title'])) {
             $array = array(
-                'id' => $_POST['listId'],
-                'title' =>  $_POST['title']
+                'id'    => (int) $_POST['listId'],
+                'title' => sanitize_text_field($_POST['title'])
             );
             update_option('sender_automated_emails_customers_list', $array);
             echo json_encode(array('success' => true));
@@ -76,8 +76,8 @@ class Sender_Automated_Emails_Settings {
 
         if(isset($_POST['listId']) && isset($_POST['title'])) {
             $array = array(
-                'id' => $_POST['listId'],
-                'title' =>  $_POST['title']
+                'id'    => (int) $_POST['listId'],
+                'title' => sanitize_text_field($_POST['title'])
             );
             update_option('sender_automated_emails_registration_list', $array);
             echo json_encode(array('success' => true));

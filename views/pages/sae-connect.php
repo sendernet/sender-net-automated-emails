@@ -15,7 +15,7 @@
                 ?>
 
                 <span>
-                    <small>v<?php echo SENDERWOO_CURRENT_VERSION; ?></small>
+                    <small>v<?php echo SENDERAUTOMATEDEMAILS_CURRENT_VERSION; ?></small>
                 </span>
             </div>
             <?php if(get_option('sender_automated_emails_has_woocommerce')): ?>

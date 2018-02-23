@@ -65,7 +65,7 @@
 
             <p>To activate this plugin you need to authenticate yourself with Sender.net, please click <strong>authenticate</strong> to enter your credentials</p>
 
-            <a href="<?php echo esc_url_raw($sender_helper->getAuthUrl()); ?>" class="sender-net-automated-emails-button">Authenticate</a>
+            <a href="<?php echo esc_url($sender_helper->getAuthUrl()); ?>" class="sender-net-automated-emails-button">Authenticate</a>
         </div>
     </div>
 </div>

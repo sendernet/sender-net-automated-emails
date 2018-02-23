@@ -64,12 +64,12 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
         } else if(isset ($forms[$instance['form']])) {
             
            if ( $title ) {
-               echo $before_title . $title . $after_title;
+               echo $before_title . esc_html($title) . $after_title;
            }
            
           
            // Display form
-           echo '<script type="text/javascript" src="' . $forms[$instance['form']] . '"></script>';
+           echo '<script type="text/javascript" src="' . esc_url($forms[$instance['form']]) . '"></script>';
 
        }
     
@@ -87,8 +87,8 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
 		$instance = $old_instance;
 		
 		/* Strip tags to remove HTML (important for text inputs). */
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		$instance['form'] = strip_tags($new_instance['form']);
+		$instance['title'] = sanitize_title( $new_instance['title'] );
+		$instance['form'] = esc_url($new_instance['form']);
 
 		return $instance;
 	}	
@@ -116,16 +116,16 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
             
         <?php if(!isset($forms->error)) { ?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 'framework') ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>" />
+			<label for="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"><?php _e('Title:', 'framework') ?></label>
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id( 'title' )); ?>" name="<?php echo esc_attr($this->get_field_name( 'title' )); ?>" value="<?php echo esc_attr($instance['title']); ?>" />
 		</p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'form' ); ?>">Select form</label> 
-            <select id="<?php echo $this->get_field_id( 'form' ); ?>" name="<?php echo $this->get_field_name( 'form' ); ?>" class="widefat" style="width:100%;">
+            <label for="<?php echo esc_attr($this->get_field_id( 'form' )); ?>">Select form</label> 
+            <select id="<?php echo esc_attr($this->get_field_id( 'form' )); ?>" name="<?php echo esc_attr($this->get_field_name( 'form' )); ?>" class="widefat" style="width:100%;">
                 <option disabled selected>Select your form</option>
                 <?php
                     foreach($forms as $form) { ?>
-                      <option <?php echo 'value="'.$form->id.'" '; if ( $form->id == $instance['form'] ) echo 'selected="selected"'; ?>><?php echo $form->title; ?></option>
+                      <option <?php echo 'value="'.esc_attr($form->id).'" '; if ( $form->id == $instance['form'] ) echo 'selected="selected"'; ?>><?php echo esc_html($form->title); ?></option>
                     <?php 
                     }
                 ?>

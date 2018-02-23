@@ -59,7 +59,7 @@
                 <?php
                     
                     foreach($lists as $list) {
-                        echo '<option value="' . (int) $list->id . '" ' . ((int)$list->id == (int) $saeNewUsersList['id'] ? 'selected' : '') . '>' . esc_html($list->title) . '</option>';
+                        echo '<option value="' . esc_attr($list->id) . '" ' . ((int)$list->id == (int) $saeNewUsersList['id'] ? 'selected' : '') . '>' . esc_html($list->title) . '</option>';
                     }
                 ?>
             </select>
@@ -117,7 +117,7 @@
                     <?php
 
                         foreach($lists as $list) {
-                            echo '<option value="' . (int) $list->id . '" ' . ((int) $list->id == (int) $customersList['id'] ? 'selected' : '') . '>' . esc_html($list->title) . '</option>';
+                            echo '<option value="' . esc_attr($list->id) . '" ' . ((int) $list->id == (int) $customersList['id'] ? 'selected' : '') . '>' . esc_html($list->title) . '</option>';
                         }
                     ?>
                 </select>

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin Name:       Sender.net Automated Emails
  * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Sender.net
  * Author URI:        https://sender.net
  * License:           GPL-2.0+
@@ -151,31 +151,31 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
             $current_time = current_time( 'timestamp' );
             
             // Check for submitted form data
-            if ( isset($_POST['first_name']) && $_POST['first_name'] != '' ){
-                $_SESSION['first_name'] = $_POST['first_name'];
+            if ( isset($_POST['first_name']) && !empty($_POST['first_name']) ){
+                $_SESSION['first_name'] = sanitize_text_field($_POST['first_name']);
             }            
-            if ( isset($_POST['last_name']) && $_POST['last_name'] != '' ) {
-                $_SESSION['last_name'] = $_POST['last_name'];
+            if ( isset($_POST['last_name']) && !empty($_POST['last_name']) ) {
+                $_SESSION['last_name'] = sanitize_text_field($_POST['last_name']);
             }       
-            if ( isset($_POST['email']) && $_POST['email'] != '' ) {
-                $_SESSION['email'] = $_POST['email'];
+            if ( isset($_POST['email']) && !empty($_POST['email']) ) {
+                $_SESSION['email'] = sanitize_email($_POST['email']);
             }            
            
             // Insert record in guest table
             if ( isset( $_SESSION['first_name'] ) ) {
-                $billing_first_name = $_SESSION['first_name'];                
+                $billing_first_name = sanitize_text_field($_SESSION['first_name']);                
             } else {
                 $billing_first_name = '';
             }
 
             if ( isset( $_SESSION['last_name'] ) ) {
-                $billing_last_name = $_SESSION['last_name'];
+                $billing_last_name = sanitize_text_field($_SESSION['last_name']);
             } else {
                 $billing_last_name = '';
             }
 
             if ( isset( $_SESSION['email'] ) ) {
-                $user_email = $_SESSION['email'];
+                $user_email =sanitize_email( $_SESSION['email']);
             } else {
                 $user_email = '';
             }
@@ -260,7 +260,7 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
             
             $api = new Sender_Automated_Emails_Api();
             $mailinglist = get_option('sender_automated_emails_customers_list');
-            $api->addToList($user_email, $mailinglist['id'], $billing_first_name, $billing_last_name);
+            $api->addToList($user_email, (int) $mailinglist['id'], $billing_first_name, $billing_last_name);
 
             $cart    = array();
 

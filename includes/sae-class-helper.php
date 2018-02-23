@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * 
  * 
  */
-class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
+class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
     
     public $debug = false;
 
@@ -21,7 +21,7 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
      */
     public function getAuthUrl() {
         $query = http_build_query(array(
-            'return'        => get_site_url() . '/wp-admin/options-general.php?page=sender-woocommerce&action=authenticate&response_key=API_KEY',
+            'return'        => get_site_url() . '/wp-admin/options-general.php?page=sender-net-automated-emails&action=authenticate&response_key=API_KEY',
             'return_cancel' => $this->getBaseUrl(),
             'store_baseurl' => get_site_url(),
             'store_currency' => get_option('woocommerce_currency')
@@ -38,36 +38,36 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
      * @return boolean
      */
     public function authenticate($apiKey) {
-        $api = new Sender_Woocommerce_Api();
+        $api = new Sender_Automated_Emails_Api();
         $api->setApiKey($apiKey);
 
         if(!$api->checkApiKey()) {
             echo $this->makeNotice('Could not authenticate!');
-            delete_option('sender_woocommerce_api_key');
-            update_option('sender_woocommerce_plugin_active', false);
+            delete_option('sender_automated_emails_api_key');
+            update_option('sender_automated_emails_plugin_active', false);
             return true;
         } else {
-            update_option('sender_woocommerce_api_key', $apiKey);
-            update_option('sender_woocommerce_plugin_active', true);
+            update_option('sender_automated_emails_api_key', $apiKey);
+            update_option('sender_automated_emails_plugin_active', true);
             
             $lists = $api->getAllLists();
             
             $forms = $api->getAllForms();
             
             if(isset($lists[0]->id) ) {
-                update_option('sender_woocommerce_customers_list', array('id' => $lists[0]->id, 'title' => $lists[0]->title));
+                update_option('sender_automated_emails_customers_list', array('id' => $lists[0]->id, 'title' => $lists[0]->title));
             } else {
-                update_option('sender_woocommerce_allow_guest_track', 0);
+                update_option('sender_automated_emails_allow_guest_track', 0);
             }
             
             if(isset($lists[0]->id)) {
-                update_option('sender_woocommerce_registration_list', array('id' => $lists[0]->id, 'title' => $lists[0]->title));
+                update_option('sender_automated_emails_registration_list', array('id' => $lists[0]->id, 'title' => $lists[0]->title));
             } else {
-                update_option('sender_woocommerce_registration_track', 0);
+                update_option('sender_automated_emails_registration_track', 0);
             }
             
-            if(isset($forms->error) && get_option('sender_woocommerce_allow_forms')) {
-                update_option( 'sender_woocommerce_allow_forms', 0 );
+            if(isset($forms->error) && get_option('sender_automated_emails_allow_forms')) {
+                update_option( 'sender_automated_emails_allow_forms', 0 );
             }
             
         }
@@ -78,8 +78,8 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
      * Delete options on disconnect
      */
     public function disconnect() {
-        delete_option('sender_woocommerce_api_key');
-        delete_option( 'sender_woocommerce_customers_list' );
+        delete_option('sender_automated_emails_api_key');
+        delete_option( 'sender_automated_emails_customers_list' );
     }
     
     /**
@@ -90,9 +90,9 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
     public function getSenderCarts() {
             global $wpdb;
             
-            $usersTable = $wpdb->prefix."sender_woocommerce_users";
-            $cartsTable = $wpdb->prefix."sender_woocommerce_carts";
-            $cartPeriod = get_option('sender_woocommerce_cart_period');
+            $usersTable = $wpdb->prefix."sender_automated_emails_users";
+            $cartsTable = $wpdb->prefix."sender_automated_emails_carts";
+            $cartPeriod = get_option('sender_automated_emails_cart_period');
             
             switch ($cartPeriod) {
                 case 'hour':
@@ -247,7 +247,7 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
                 echo '<div style="text-align: center;">';
                 foreach ($links as $link) {
                     $link = str_replace('current', 'sw-current-link', $link);
-                    echo '<span class="" style="margin-left:2px; background-color: #fff; color: #000 !important; text-decoration: none !important;">' . str_replace('page-numbers', 'sender-woocommerce-button', $link) . '</span>';
+                    echo '<span class="" style="margin-left:2px; background-color: #fff; color: #000 !important; text-decoration: none !important;">' . str_replace('page-numbers', 'sender-net-automated-emails-button', $link) . '</span>';
                 }
                 echo "</div>";
             }
@@ -262,9 +262,9 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
     public function getSenderConvertedCarts() {
             global $wpdb;
             
-            $usersTable = $wpdb->prefix."sender_woocommerce_users";
-            $cartsTable = $wpdb->prefix."sender_woocommerce_carts";
-            $cartPeriod = get_option('sender_woocommerce_cart_period');
+            $usersTable = $wpdb->prefix."sender_automated_emails_users";
+            $cartsTable = $wpdb->prefix."sender_automated_emails_carts";
+            $cartPeriod = get_option('sender_automated_emails_cart_period');
             
             switch ($cartPeriod) {
                 case 'hour':
@@ -422,7 +422,7 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
                 echo '<div style="text-align: center;">';
                 foreach ($links as $link) {
                     $link = str_replace('current', 'sw-current-link', $link);
-                    echo '<span class="" style="margin-left:2px; background-color: #fff; color: #000 !important; text-decoration: none !important;">' . str_replace('page-numbers', 'sender-woocommerce-button', $link) . '</span>';
+                    echo '<span class="" style="margin-left:2px; background-color: #fff; color: #000 !important; text-decoration: none !important;">' . str_replace('page-numbers', 'sender-net-automated-emails-button', $link) . '</span>';
                 }
                 echo "</div>";
             }
@@ -449,7 +449,7 @@ class Sender_Woocommerce_Helper extends Sender_Woocommerce_Settings {
      */
     public function showNotice($text, $type) {
         
-        $notice =   '<div class="sender-woocommerce-alert sender-woocommerce-'
+        $notice =   '<div class="sender-net-automated-emails-alert sender-net-automated-emails-'
                     . $type . '">' . $text . '</div>';
         
         return $notice;

@@ -6,10 +6,10 @@
 
 ?>
 
-<div class="pure-g sender-woocommerce-connect">
-    <div class="pure-u-1-1 sender-woocommerce-header">
+<div class="pure-g sender-net-automated-emails-connect">
+    <div class="pure-u-1-1 sender-net-automated-emails-header">
         <div class="pure-g">
-            <div class="pure-u-1-1 pure-u-sm-1-2 sw-text-left">
+            <div class="pure-u-1-1 pure-u-sm-1-2 sae-text-left">
                 <?php
                 echo '<img src="' . plugins_url( '/assets/images/logo.png', dirname(dirname(__FILE__)) ) . '" alt="Sender logo"> ';
                 ?>
@@ -18,8 +18,8 @@
                     <small>v<?php echo SENDERWOO_CURRENT_VERSION; ?></small>
                 </span>
             </div>
-            <?php if(get_option('sender_woocommerce_has_woocommerce')): ?>
-            <div class="pure-u-1-2 pure-u-sm-1-2 sw-text-right">
+            <?php if(get_option('sender_automated_emails_has_woocommerce')): ?>
+            <div class="pure-u-1-2 pure-u-sm-1-2 sae-text-right">
                 <?php
                 echo '<img src="' . plugins_url( '/assets/images/woo.png', dirname(dirname(__FILE__)) ) . '" height="42" alt="Woocommerce logo"> ';
                 ?>
@@ -28,16 +28,16 @@
         </div>
     </div>
     
-    <div class="pure-u-1-3 sender-woocommerce-content">
-        <div id="sw-connect" class="sw-tab-content sw-current" style="text-align: left !important;">
+    <div class="pure-u-1-3 sender-net-automated-emails-content">
+        <div id="sae-connect" class="sae-tab-content sae-current" style="text-align: left !important;">
             <h1>Connect your plugin</h1>
             <p>We need to connect this plugin to your Seder.net account. </p>
             <br>
-            <div class="sw-text-left">
+            <div class="sae-text-left">
                 <h3>Data tracking & scripts</h3>
                 <h4><i class="zmdi zmdi-info"></i> All of these options can be disabled!</h4>
                 <ul>
-                    <?php if(get_option('sender_woocommerce_has_woocommerce')): ?>
+                    <?php if(get_option('sender_automated_emails_has_woocommerce')): ?>
                     <li>
                         <i class="zmdi zmdi-shopping-cart"></i>
                         If enabled the plugin will sync customer email and cart with Sender.net
@@ -65,7 +65,7 @@
 
             <p>To activate this plugin you need to authenticate yourself with Sender.net, please click <strong>authenticate</strong> to enter your credentials</p>
 
-            <a href="<?php echo $sender_helper->getAuthUrl(); ?>" class="sender-woocommerce-button">Authenticate</a>
+            <a href="<?php echo $sender_helper->getAuthUrl(); ?>" class="sender-net-automated-emails-button">Authenticate</a>
         </div>
     </div>
 </div>

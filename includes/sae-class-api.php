@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * 
  * Handles communication with sender
  */
-class Sender_Woocommerce_Api extends Sender_Woocommerce_Settings {
+class Sender_Automated_Emails_Api extends Sender_Automated_Emails_Settings {
     
     private $apiKey;
     private $apiEndpoint;
@@ -17,7 +17,7 @@ class Sender_Woocommerce_Api extends Sender_Woocommerce_Settings {
 
     public function __construct() {
         
-        $this->apiKey = get_option('sender_woocommerce_api_key');
+        $this->apiKey = get_option('sender_automated_emails_api_key');
         $this->apiEndpoint = $this->getBaseUrl() . '/api';
         $this->commerceEndpoint = $this->getBaseUrl() . '/commerce/v1';
         
@@ -59,8 +59,8 @@ class Sender_Woocommerce_Api extends Sender_Woocommerce_Settings {
         $response = $this->ping();
         
         if (!isset($response->pong) || !$this->getApiKey()) { // Wrong api key
-            delete_option('sender_woocommerce_api_key');
-            update_option('sender_woocommerce_plugin_active', false);
+            delete_option('sender_automated_emails_api_key');
+            update_option('sender_automated_emails_plugin_active', false);
             return false;
         }
         

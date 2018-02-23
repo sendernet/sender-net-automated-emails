@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles carts
  */
 
-class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
+class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
     
     var $sender_api;
     var $sender_helper;
@@ -23,8 +23,8 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
  */
     public function __construct() {
 
-        $this->sender_api = new Sender_Woocommerce_Api();
-        $this->sender_helper = new Sender_Woocommerce_Helper();
+        $this->sender_api = new Sender_Automated_Emails_Api();
+        $this->sender_helper = new Sender_Automated_Emails_Helper();
         
         
     }
@@ -63,7 +63,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
             $this->handleLoggedInUsers();
             
         } else { 
-            if (get_option('sender_woocommerce_allow_guest_track')) {
+            if (get_option('sender_automated_emails_allow_guest_track')) {
                 $this->handleGuestUsers();
             }
         }
@@ -87,7 +87,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         
         global $wpdb;
         
-        $query   = "SELECT * FROM `".$wpdb->prefix."sender_woocommerce_carts`
+        $query   = "SELECT * FROM `".$wpdb->prefix."sender_automated_emails_carts`
                         WHERE user_id = %d
                         AND user_type = %s
                         AND cart_recovered = %d
@@ -114,7 +114,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         
         global $wpdb;
         
-        $query   = "SELECT * FROM `".$wpdb->prefix."sender_woocommerce_carts`
+        $query   = "SELECT * FROM `".$wpdb->prefix."sender_automated_emails_carts`
                         WHERE session = %s
                         AND user_type = 'GUEST'
                         AND cart_recovered = %d
@@ -143,7 +143,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         $currentTime = current_time('timestamp');
         
         
-        $sqlQuery = "INSERT INTO `".$wpdb->prefix."sender_woocommerce_carts`
+        $sqlQuery = "INSERT INTO `".$wpdb->prefix."sender_automated_emails_carts`
                          ( user_id, user_type, cart_data, session, created, updated )
                          VALUES ( %d, %s, %s, %s, %d, %d )";
 
@@ -167,7 +167,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         }
         
         global $wpdb;
-        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                              SET cart_data = %s,
                                  updated = %d
                              WHERE user_id = %d 
@@ -189,7 +189,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
     public function recoverSenderCart($userId, $cartId) {
         
         global $wpdb;
-        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                             SET user_id = %d,
                                 cart_recovered = '1',
                             WHERE id = %d";
@@ -207,7 +207,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
     public function convertSenderCart($cartId) {
         
         global $wpdb;
-        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                             SET cart_status = '2',
                                 session = ''
                             WHERE id = %d";
@@ -273,7 +273,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
     public function getSenderUser($userId) {
         
         global $wpdb;
-        $sqlQuery = "SELECT * FROM `".$wpdb->prefix."sender_woocommerce_users` WHERE id = %d AND id != '0'";
+        $sqlQuery = "SELECT * FROM `".$wpdb->prefix."sender_automated_emails_users` WHERE id = %d AND id != '0'";
 
 
         $result = $wpdb->get_results( $wpdb->prepare( $sqlQuery, $userId ) );
@@ -293,7 +293,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
     public function getSenderUserByEmail($email) {
         
         global $wpdb;
-        $sqlQuery = "SELECT * FROM `".$wpdb->prefix."sender_woocommerce_users` WHERE email = %s AND id != '0'";
+        $sqlQuery = "SELECT * FROM `".$wpdb->prefix."sender_automated_emails_users` WHERE email = %s AND id != '0'";
 
 
         $result = $wpdb->get_results( $wpdb->prepare( $sqlQuery, $email ) );
@@ -319,7 +319,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
             $results = $this->getSenderCart($user_id, 'REGISTERED');
             
             
-            $_SESSION['sender_woocommerce_user_id'] = $user_id;
+            $_SESSION['sender_automated_emails_user_id'] = $user_id;
             
             
 
@@ -333,7 +333,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
 
                     $abandoned_cart_id = $this->saveSenderCart($user_id, 'REGISTERED', $cart_info);
 
-                    $_SESSION['sender_woocommerce_cart_id'] = $abandoned_cart_id;
+                    $_SESSION['sender_automated_emails_cart_id'] = $abandoned_cart_id;
                 }
 
             } else {     
@@ -351,7 +351,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
 
                     if ( count( $cartUp ) > 0 ) {
                         $abandoned_cart_id   = $cartUp[0]->id;
-                        $_SESSION['sender_woocommerce_cart_id'] = $abandoned_cart_id;
+                        $_SESSION['sender_automated_emails_cart_id'] = $abandoned_cart_id;
 
                     }
 
@@ -380,7 +380,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         if ( isset( $_SESSION['user_id'] ) ) { 
             
             $user_id = $_SESSION['user_id'];
-            $_SESSION['sender_woocommerce_user_id'] = $user_id;
+            $_SESSION['sender_automated_emails_user_id'] = $user_id;
            
         } else {
             
@@ -421,7 +421,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
 
             }
 
-            $_SESSION['sender_woocommerce_cart_id'] = $results[0]->id;
+            $_SESSION['sender_automated_emails_cart_id'] = $results[0]->id;
                 
         } else {    
                
@@ -438,7 +438,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
                         $cartId = $this->saveSenderCart(0, 'GUEST', $cart_info, $get_cookie[0]);
                       
                         
-                        $_SESSION['sender_woocommerce_cart_id'] = $cartId;
+                        $_SESSION['sender_automated_emails_cart_id'] = $cartId;
                        
                     }   
                     
@@ -446,7 +446,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
                     
                     if ( !empty($cart['cart']) ) {   
                         
-                        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+                        $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                              SET cart_data = %s,
                                  updated = %d
                              WHERE id = %d 
@@ -462,7 +462,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
                             $this->prepareForApiCall($results[0]->id, $get_user[0]->email);
                         }
                          
-                        $_SESSION['sender_woocommerce_cart_id'] = $results[0]->id;
+                        $_SESSION['sender_automated_emails_cart_id'] = $results[0]->id;
                         
                     }
                     
@@ -487,15 +487,15 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
    
         
         // Here we update user id for sender cart if user logs in
-        if(isset($_SESSION['sender_woocommerce_cart_id']) && is_user_logged_in()) {
+        if(isset($_SESSION['sender_automated_emails_cart_id']) && is_user_logged_in()) {
             
-            $sqlQuery = "UPDATE `".$wpdb->prefix."sender_woocommerce_carts`
+            $sqlQuery = "UPDATE `".$wpdb->prefix."sender_automated_emails_carts`
                         SET user_id = %d,
                             updated = %d,
                             user_type = 'REGISTERED'
                         WHERE id = %d";
 
-            $wpdb->query( $wpdb->prepare($sqlQuery, get_current_user_id(), current_time('timestamp'), $_SESSION['sender_woocommerce_cart_id']) );
+            $wpdb->query( $wpdb->prepare($sqlQuery, get_current_user_id(), current_time('timestamp'), $_SESSION['sender_automated_emails_cart_id']) );
 
         }
 
@@ -506,7 +506,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         if(isset($_GET['hash'])) {
             $sCart = $this->sender_api->cartGet($_GET['hash']);
             $cartId = (int)$sCart->cart_id;
-            setcookie( 'sender_woocommerce_h', $_GET['hash'], time() + 900000 );
+            setcookie( 'sender_automated_emails_h', $_GET['hash'], time() + 900000 );
         }
 
         $this->sender_helper->logError('Assign cart id: ' . $cartId);
@@ -522,7 +522,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
 
             $get_user_results  = array();
 
-            $get_user_id_query = "SELECT * FROM `".$wpdb->prefix."sender_woocommerce_carts` WHERE id = %d AND cart_recovered = '0' AND cart_status = '0'";
+            $get_user_id_query = "SELECT * FROM `".$wpdb->prefix."sender_automated_emails_carts` WHERE id = %d AND cart_recovered = '0' AND cart_status = '0'";
             $get_user_results  = $wpdb->get_results( $wpdb->prepare( $get_user_id_query, $cartId ) );
             $user_id           = 0;
             $user_type = false;
@@ -537,15 +537,15 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
                 exit;
             } 
             
-            setcookie ("sender_woocommerce_u", base64_encode($user_id), time() + 900000);
+            setcookie ("sender_automated_emails_u", base64_encode($user_id), time() + 900000);
             
             
             if ( $user_type == 'GUEST' ) {
                 
-                $query_guest   = "SELECT * from `". $wpdb->prefix."sender_woocommerce_users` WHERE id = %d";
+                $query_guest   = "SELECT * from `". $wpdb->prefix."sender_automated_emails_users` WHERE id = %d";
                 $results_guest = $wpdb->get_results( $wpdb->prepare( $query_guest, $user_id ) );
                 
-                $query_cart    = "SELECT cart_recovered FROM `".$wpdb->prefix."sender_woocommerce_carts` WHERE id = %d";
+                $query_cart    = "SELECT cart_recovered FROM `".$wpdb->prefix."sender_automated_emails_carts` WHERE id = %d";
                 $results       = $wpdb->get_results( $wpdb->prepare( $query_cart, $cartId ) );  
                 
 
@@ -633,12 +633,12 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         
         global $wpdb;
         
-        if(isset($_COOKIE['sender_woocommerce_h']) && isset($_COOKIE['sender_woocommerce_u'])) {
+        if(isset($_COOKIE['sender_automated_emails_h']) && isset($_COOKIE['sender_automated_emails_u'])) {
             
-            $tmpCartId = $this->sender_api->cartGet($_COOKIE['sender_woocommerce_h']);
+            $tmpCartId = $this->sender_api->cartGet($_COOKIE['sender_automated_emails_h']);
             $cartId = $tmpCartId->cart_id;
             
-            $userId = base64_decode($_COOKIE['sender_woocommerce_u']);
+            $userId = base64_decode($_COOKIE['sender_automated_emails_u']);
             
             $resp = $this->sender_api->cartConvert($cartId);
             
@@ -647,7 +647,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
         
             if(is_user_logged_in() && get_current_user_id() > 0) {
 
-                $wpdb->delete($wpdb->prefix . "sender_woocommerce_carts", array('id' => $userId), array('%d'));
+                $wpdb->delete($wpdb->prefix . "sender_automated_emails_carts", array('id' => $userId), array('%d'));
 
                 $userId = get_current_user_id();
                 
@@ -658,22 +658,22 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
             
             $this->convertSenderCart($cartId);
 
-            setcookie ("sender_woocommerce_u",$_COOKIE['sender_woocommerce_u'], time() - 9000000);
-            setcookie ("sender_woocommerce_h",$_COOKIE['sender_woocommerce_h'], time() - 9000000);
+            setcookie ("sender_automated_emails_u",$_COOKIE['sender_automated_emails_u'], time() - 9000000);
+            setcookie ("sender_automated_emails_h",$_COOKIE['sender_automated_emails_h'], time() - 9000000);
 
             return $order;
             
             
-        } elseif (isset($_SESSION['sender_woocommerce_cart_id']) && isset($_SESSION['sender_woocommerce_user_id'])) {
+        } elseif (isset($_SESSION['sender_automated_emails_cart_id']) && isset($_SESSION['sender_automated_emails_user_id'])) {
             
-            if(isset($_SESSION['sender_woocommerce_cart_id'])) {
-                $cartId = $_SESSION['sender_woocommerce_cart_id'];
+            if(isset($_SESSION['sender_automated_emails_cart_id'])) {
+                $cartId = $_SESSION['sender_automated_emails_cart_id'];
             } else {
                 $cartId = '';
             }
 
-            if(isset($_SESSION['sender_woocommerce_user_id'])) {
-                $userId = $_SESSION['sender_woocommerce_user_id'];
+            if(isset($_SESSION['sender_automated_emails_user_id'])) {
+                $userId = $_SESSION['sender_automated_emails_user_id'];
             } else {
                 $userId = '';
             }
@@ -685,7 +685,7 @@ class Sender_Woocommerce_Carts extends Sender_Woocommerce_Settings {
             
             if(is_user_logged_in() && get_current_user_id() > 0) {
 
-                $wpdb->delete($wpdb->prefix . "sender_woocommerce_carts", array('id' => $userId), array('%d'));
+                $wpdb->delete($wpdb->prefix . "sender_automated_emails_carts", array('id' => $userId), array('%d'));
 
                 $userId = get_current_user_id();
                 

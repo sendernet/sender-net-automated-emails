@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * 
  * 
  */
-class Sender_Woocommerce_Settings {
+class Sender_Automated_Emails_Settings {
 
     private $baseUrl = 'https://app.sender.net';
     
@@ -61,7 +61,7 @@ class Sender_Woocommerce_Settings {
                 'id' => $_POST['listId'],
                 'title' =>  $_POST['title']
             );
-            update_option('sender_woocommerce_customers_list', $array);
+            update_option('sender_automated_emails_customers_list', $array);
             echo json_encode(array('success' => true));
             wp_die();
         }
@@ -79,7 +79,7 @@ class Sender_Woocommerce_Settings {
                 'id' => $_POST['listId'],
                 'title' =>  $_POST['title']
             );
-            update_option('sender_woocommerce_registration_list', $array);
+            update_option('sender_automated_emails_registration_list', $array);
             echo json_encode(array('success' => true));
             wp_die();
         }
@@ -91,9 +91,9 @@ class Sender_Woocommerce_Settings {
      */
     function toggle_cart_track() {
         
-        $trackStatus = get_option('sender_woocommerce_allow_guest_track');
+        $trackStatus = get_option('sender_automated_emails_allow_guest_track');
         
-        update_option('sender_woocommerce_allow_guest_track', (int)!$trackStatus);
+        update_option('sender_automated_emails_allow_guest_track', (int)!$trackStatus);
         
         echo (int)!$trackStatus;
         wp_die();
@@ -105,9 +105,9 @@ class Sender_Woocommerce_Settings {
      */
     function toggle_registration_track() {
         
-        $trackStatus = get_option('sender_woocommerce_registration_track');
+        $trackStatus = get_option('sender_automated_emails_registration_track');
         
-        update_option('sender_woocommerce_registration_track', (int)!$trackStatus);
+        update_option('sender_automated_emails_registration_track', (int)!$trackStatus);
         
         echo (int)!$trackStatus;
         wp_die();
@@ -119,9 +119,9 @@ class Sender_Woocommerce_Settings {
      */
     function toggle_allow_import() {
         
-        $importStatus = get_option('sender_woocommerce_allow_import');
+        $importStatus = get_option('sender_automated_emails_allow_import');
         
-        update_option('sender_woocommerce_allow_import', (int)!$importStatus);
+        update_option('sender_automated_emails_allow_import', (int)!$importStatus);
         
         echo (int)!$importStatus;
         wp_die();
@@ -133,9 +133,9 @@ class Sender_Woocommerce_Settings {
      */
     function toggle_allow_push() {
         
-        $pushStatus = get_option('sender_woocommerce_allow_push');
+        $pushStatus = get_option('sender_automated_emails_allow_push');
         
-        update_option('sender_woocommerce_allow_push', (int)!$pushStatus);
+        update_option('sender_automated_emails_allow_push', (int)!$pushStatus);
         
         echo (int)!$pushStatus;
         wp_die();
@@ -147,9 +147,9 @@ class Sender_Woocommerce_Settings {
      */
     function toggle_allow_high_acc() {
         
-        $allowHighAcc = get_option('sender_woocommerce_high_acc');
+        $allowHighAcc = get_option('sender_automated_emails_high_acc');
         
-        update_option('sender_woocommerce_high_acc', (int)!$allowHighAcc);
+        update_option('sender_automated_emails_high_acc', (int)!$allowHighAcc);
         
         echo (int)!$allowHighAcc;
         wp_die();
@@ -161,9 +161,9 @@ class Sender_Woocommerce_Settings {
      */
     function toggle_form_widget() {
         
-        $importStatus = get_option('sender_woocommerce_allow_forms');
+        $importStatus = get_option('sender_automated_emails_allow_forms');
         
-        update_option('sender_woocommerce_allow_forms', (int)!$importStatus);
+        update_option('sender_automated_emails_allow_forms', (int)!$importStatus);
         
         echo (int)!$importStatus;
         wp_die();
@@ -171,4 +171,4 @@ class Sender_Woocommerce_Settings {
     }
     
 // Init class
-$senderSettings = new Sender_Woocommerce_Settings();
+$senderSettings = new Sender_Automated_Emails_Settings();

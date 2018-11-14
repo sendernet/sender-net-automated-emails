@@ -198,6 +198,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
 
                 if($result->user_type == 'REGISTERED') {
                     $result->email = get_userdata($result->user_id)->user_email;
+
                 }
 
                 $cart = json_decode($result->cart_data);

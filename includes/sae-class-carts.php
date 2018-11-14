@@ -84,6 +84,9 @@ class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
         if(!$userId) {
             return [];
         }
+
+
+
         
         global $wpdb;
         

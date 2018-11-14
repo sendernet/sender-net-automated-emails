@@ -29,7 +29,7 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
 /*	Widget Setup
 /*-----------------------------------------------------------------------------------*/
 	
-	function Sender_Automated_Emails_Widget() {
+	function __construct() {
         
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => 'sae_sender_form', 'description' => __('Add Sender.net form to your website.', 'framework') );
@@ -88,11 +88,11 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
 		
 		/* Strip tags to remove HTML (important for text inputs). */
 		$instance['title'] = sanitize_title( $new_instance['title'] );
-		$instance['form'] = esc_url($new_instance['form']);
+		$instance['form'] = preg_replace('~\D~', '', $new_instance['form']);
 
 		return $instance;
 	}	
-	
+
 /*-----------------------------------------------------------------------------------*/
 /*	Widget Settings
 /*-----------------------------------------------------------------------------------*/
@@ -109,7 +109,6 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
             'title' => 'Sender.net Form',
             'form' => 120,
 		);
-        
 		$instance = wp_parse_args( (array) $instance, $defaults );
         
         ?>
@@ -124,8 +123,9 @@ class Sender_Automated_Emails_Widget extends WP_Widget {
             <select id="<?php echo esc_attr($this->get_field_id( 'form' )); ?>" name="<?php echo esc_attr($this->get_field_name( 'form' )); ?>" class="widefat" style="width:100%;">
                 <option disabled selected>Select your form</option>
                 <?php
-                    foreach($forms as $form) { ?>
-                      <option <?php echo 'value="'.esc_attr($form->id).'" '; if ( $form->id == $instance['form'] ) echo 'selected="selected"'; ?>><?php echo esc_html($form->title); ?></option>
+                    foreach($forms as $form) {
+                        ?>
+                      <option <?php echo 'value="'.esc_attr($form->id).'" '; if ( $form->id == $instance['form'] ) echo 'selected = "selected"' ; ?>><?php echo esc_html($form->title); ?></option>
                     <?php 
                     }
                 ?>

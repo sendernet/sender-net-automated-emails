@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  *
  * @link              https://sender.net
- * @since             1.0.2
+ * @since             1.0.0
  * @package           sender-net-automated-emails
  *
  * @wordpress-plugin

@@ -9,14 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  *
  * @link              https://sender.net
- * @since             1.0.0
+ * @since             1.0.2
  * @package           sender-net-automated-emails
  *
  * @wordpress-plugin
  * Plugin Name:       Sender.net Automated Emails
  * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Sender.net
  * Author URI:        https://sender.net
  * License:           GPL-2.0+
@@ -279,6 +279,9 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
                     $userR = $sender_carts->getSenderUser($user_id);
 
                     if(isset($userR[0]->email)) { // Sync cart only if has email
+
+                        $this->sae_subscribe_new_user($user_id);
+
                         $sender_carts->prepareForApiCall($results[0]->id, $userR[0]->email);
                     }
                     

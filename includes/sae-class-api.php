@@ -75,10 +75,8 @@ class Sender_Automated_Emails_Api extends Sender_Automated_Emails_Settings {
  
             )
         );
-        
         return $this->makeApiRequest($data);
     }
-
 
     /**
      * Retrieve all mailinglists

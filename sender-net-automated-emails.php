@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin Name:       Sender.net Automated Emails
  * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Sender.net
  * Author URI:        https://sender.net
  * License:           GPL-2.0+
@@ -351,7 +351,7 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
                 $pName = $product->get_name();
                 $pImage = get_the_post_thumbnail_url($id);
                 $pDescription = str_replace("\"", '\\"', $product->get_description());
-                $pPrice = $product->get_price();
+                $pPrice = $product->get_regular_price();
                 $pSalePrice = $product->get_sale_price();
                 $pCurrency = get_option('woocommerce_currency');
                 $pQty = $product->get_stock_quantity();
@@ -359,15 +359,18 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
 
                 if(empty($pSalePrice)) {
                     $pSalePrice = $pPrice;
+                    $pDiscount = 0;
                 }
+                else                 $pDiscount = round((string) 100 - ($pSalePrice / $pPrice *100));
 
                  echo '<script type="application/sender+json">
                         {
                           "name": "' . $pName . '",
                           "image": "' . $pImage . '",
                           "description": "' . $pDescription . '",
-                          "price": "' . $pPrice . '",
-                          "special_price": "' . $pSalePrice . '",
+                          "price": "' . (float) $pPrice .'",
+                          "discount": "-' .$pDiscount . '%",
+                          "special_price": "' . (float) $pSalePrice.'",
                           "currency": "' . $pCurrency . '",
                           "quantity": "' . $pQty . '",
                           "rating": "' . $pRating . '"

@@ -241,17 +241,22 @@ class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
             "grand_total" =>  $total,
             "products" => array()
         );
-        
-        foreach($items as $item => $values) { 
+
+        foreach($items as $item => $values) {
+
             $_product =  wc_get_product( $values['data']->get_id() );
+            $discount = round(100-(get_post_meta($values['product_id'] , '_sale_price', true) / get_post_meta($values['product_id'] , '_regular_price', true) * 100));
             $prod = array(
                 'sku' => $values['data']->get_sku(),
                 'name' => $_product->get_title(),
-                'price' => get_post_meta($values['product_id'] , '_price', true),
+                'price' => get_post_meta($values['product_id'] , '_regular_price', true),
                 'price_display' => get_post_meta($values['product_id'] , '_sale_price', true),
+                'discount' => (string)$discount,
                 'qty' =>  $values['quantity'],
                 'image' => get_the_post_thumbnail_url($values['data']->get_id())
             );
+
+
             $data['products'][] = $prod;
         }
         

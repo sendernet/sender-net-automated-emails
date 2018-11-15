@@ -32,10 +32,6 @@
         <div class="pure-u-1-1 pure-u-sm-12-24">
             <table>
                 <tr>
-                    <td>Account email:</td>
-                    <td><strong><?php echo esc_html($sender_api->ping()->email); ?></strong></td>
-                </tr>
-                <tr>
                     <td>API key:</td>
                     <td><strong><?php echo esc_html($sender_api->getApiKey()); ?></strong></td>
                 </tr>

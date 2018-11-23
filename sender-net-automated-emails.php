@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin Name:       Sender.net Automated Emails
  * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            Sender.net
  * Author URI:        https://sender.net
  * License:           GPL-2.0+

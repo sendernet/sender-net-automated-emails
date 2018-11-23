@@ -5,7 +5,7 @@ Contributors: Sender.net
 Tags: sender.net, abandoned cart, cart recovery, email marketing software, email marketing automation, newsletter, automated, emails, conversion, push, notification, subscription, forms
 Author URI: https://www.sender.net/
 Requires at least: 1.3
-Tested up to: 4.8.2
+Tested up to: 4.9.8
 Stable tag: master
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,9 @@ Guest cart capture
 Converted cart tracking
 
 == Changelog ==
+
+= 1.0.4 =
+Added CURL for making requests if file_get_contents is not available
 
 = 1.0.0 =
 Initial release

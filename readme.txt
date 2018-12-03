@@ -30,6 +30,9 @@ Converted cart tracking
 
 == Changelog ==
 
+= 1.0.5 =
+Bug fixes
+
 = 1.0.4 =
 Added CURL for making requests if file_get_contents is not available
 

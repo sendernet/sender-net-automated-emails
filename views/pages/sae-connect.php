@@ -31,7 +31,7 @@
     <div class="pure-u-1-3 sender-net-automated-emails-content">
         <div id="sae-connect" class="sae-tab-content sae-current" style="text-align: left !important;">
             <h1>Connect your plugin</h1>
-            <p>We need to connect this plugin to your Seder.net account. </p>
+            <p>We need to connect this plugin to your Sender.net account. </p>
             <br>
             <div class="sae-text-left">
                 <h3>Data tracking & scripts</h3>

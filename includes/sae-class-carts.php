@@ -245,6 +245,7 @@ class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
             $regularPrice = (int) get_post_meta($values['product_id'] , '_regular_price', true);
             $salePrice    = (int) get_post_meta($values['product_id'] , '_sale_price', true);
 
+            if ($regularPrice <= 0) $regularPrice = 1;
             $discount = round(100 - ($salePrice / $regularPrice * 100));
 
             $prod = array(

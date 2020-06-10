@@ -30,6 +30,9 @@ Converted cart tracking
 
 == Changelog ==
 
+= 1.0.6 =
+Abandoned cart bug fix
+
 = 1.0.5 =
 Bug fixes
 

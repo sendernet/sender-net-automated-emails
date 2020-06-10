@@ -152,7 +152,7 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
             ";
                 
             $results = $wpdb->get_results($query);
-            
+
             $links = paginate_links( array(
                                     'base' => add_query_arg( 'cpage', '%#%&#!dashboard' ),
                                     'format' => '',
@@ -212,22 +212,24 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
 
                 $line_total = 0;
 
-                if( count( $cart_details ) > 0 ) {    		
-                    foreach( $cart_details as $k => $v ) {    		     
-                        if( $v->line_subtotal_tax != 0 && $v->line_subtotal_tax > 0 ) {
-                            $line_total = $line_total + $v->line_total + $v->line_subtotal_tax;
-                        } else {
-                            $line_total = $line_total + $v->line_total;
-                        }
+                if( $cart_details !==  null) {
+                    foreach( $cart_details as $k => $v ) {
+                    	if(isset($v->line_subtotal_tax)) {
+							$line_total = $line_total + $v->line_total + $v->line_subtotal_tax;
+						}elseif(isset($v->line_total)) {
+							$line_total = $line_total + $v->line_total;
+						}
                     }
                 }
 
                 $line_total     = wc_price( $line_total );
                 $quantity_total = 0;
 
-                if ( count( $cart_details ) > 0) {    		         
+                if ( $cart_details != null) {
                     foreach( $cart_details as $k => $v ) {
-                        $quantity_total = $quantity_total + $v->quantity;
+                    	if($v->quantity !== null) {
+							$quantity_total = $quantity_total + $v->quantity;
+						}
                     }
                 }
 
@@ -378,11 +380,12 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
 
                 $line_total = 0;
 
-                if( count( $cart_details ) > 0 ) {    		
-                    foreach( $cart_details as $k => $v ) {    		     
-                        if( $v->line_subtotal_tax != 0 && $v->line_subtotal_tax > 0 ) {
-                            $line_total = $line_total + $v->line_total + $v->line_subtotal_tax;
-                        } else {
+				if( $cart_details !==  null) {
+					foreach( $cart_details as $k => $v ) {
+						if(isset($v->line_subtotal_tax)) {
+
+							$line_total = $line_total + $v->line_total + $v->line_subtotal_tax;
+						}elseif(isset($v->line_total)) {
                             $line_total = $line_total + $v->line_total;
                         }
                     }
@@ -395,9 +398,11 @@ class Sender_Automated_Emails_Helper extends Sender_Automated_Emails_Settings {
                 $line_total     = wc_price( $line_total );
                 $quantity_total = 0;
 
-                if ( count( $cart_details ) > 0) {    		         
+				if ( $cart_details != null) {
                     foreach( $cart_details as $k => $v ) {
-                        $quantity_total = $quantity_total + $v->quantity;
+						if($v->quantity !== null) {
+							$quantity_total = $quantity_total + $v->quantity;
+						}
                     }
                 }
                 

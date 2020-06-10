@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin Name:       Sender.net Automated Emails
  * Plugin URI:        https://help.sender.net/knowledgebase/the-documentation-of-our-woocommerce-plugin/
  * Description:       The email marketing automation tool that helps you reach your customers with ease.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            Sender.net
  * Author URI:        https://sender.net
  * License:           GPL-2.0+
@@ -388,7 +388,9 @@ if( !class_exists( 'Sender_Automated_Emails' ) ) { // Check if class exists
             $sender_api = new Sender_Automated_Emails_Api();
             $userObj = get_userdata($user_id);
             $listId = get_option('sender_automated_emails_registration_list');
-            $sender_api->addToList($userObj->user_email, $listId['id']);
+            if(isset($userObj->user_email)){
+				$sender_api->addToList($userObj->user_email, $listId['id']);
+            }
         }
 
         /**

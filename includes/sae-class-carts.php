@@ -252,7 +252,7 @@ class Sender_Automated_Emails_Carts extends Sender_Automated_Emails_Settings {
                 'sku' => $values['data']->get_sku(),
                 'name' => $_product->get_title(),
                 'price' => $regularPrice,
-                'price_display' => $salePrice,
+				'price_display' => (string) $_product->get_price().get_woocommerce_currency_symbol(),
                 'discount' => (string) $discount,
                 'qty' =>  $values['quantity'],
                 'image' => get_the_post_thumbnail_url($values['data']->get_id())

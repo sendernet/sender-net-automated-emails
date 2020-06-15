@@ -30,8 +30,8 @@
     
     <div class="pure-u-1-1 pure-u-lg-3-24 sender-net-automated-emails-hide-small sender-net-automated-emails-menu">
         <ul class="sae-tabs sae-main-menu">
-            <?php if(get_option('sender_automated_emails_has_woocommerce') && false): ?>
-            <li class="tab-link sae-current sae-active" data-tab="dashboard" disabled>
+            <?php if(get_option('sender_automated_emails_has_woocommerce')): ?>
+            <li class="tab-link sae-current" data-tab="dashboard" disabled>
                 <a href="#!dashboard"><i class="zmdi zmdi-shopping-cart"></i> Active Carts</a>
             </li>
             <li class="tab-link" data-tab="converted" disabled>
@@ -52,8 +52,8 @@
         </ul>
     </div>
     <div class="pure-u-1-1 pure-u-lg-18-24 sender-net-automated-emails-content">
-       <?php if(get_option('sender_automated_emails_has_woocommerce') && false): ?>
-        <div id="dashboard" class="sae-tab-content sae-current">
+       <?php if(get_option('sender_automated_emails_has_woocommerce')): ?>
+        <div id="dashboard" class="sae-tab-content">
             <?php include_once 'tabs/sae-tab-dashboard.php'; ?>
         </div>
         <div id="converted" class="sae-tab-content">
@@ -72,6 +72,3 @@
       
     </div>
 </div>
-
-
-

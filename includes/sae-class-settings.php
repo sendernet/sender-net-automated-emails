@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Sender_Automated_Emails_Settings {
 
-    private $baseUrl = 'https://app.sender.net';
+    private $baseUrl = 'https://api.sender.net';
     
     public function __construct() {
         add_action( 'wp_ajax_change_customer_list', 'change_customer_list');

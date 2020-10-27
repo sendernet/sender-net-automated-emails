@@ -19,7 +19,7 @@ class Sender_Automated_Emails_Api extends Sender_Automated_Emails_Settings
     {
 
         $this->apiKey = get_option('sender_automated_emails_api_key');
-        $this->apiEndpoint = $this->getBaseUrl() . '/api';
+        $this->apiEndpoint = $this->getBaseUrl() . '/v1';
         $this->commerceEndpoint = $this->getBaseUrl() . '/commerce/v1';
 
     }
